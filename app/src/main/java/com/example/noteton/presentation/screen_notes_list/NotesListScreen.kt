@@ -29,7 +29,6 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.noteton.R
-import com.example.noteton.ui.theme.NotetonTheme
 import kotlinx.coroutines.flow.flowOf
 
 
@@ -112,12 +111,10 @@ fun NotesListScreenPreview() {
 
     val lazyPagingItems = fakeFlow.collectAsLazyPagingItems()
 
-    NotetonTheme {
-        NotesListScreen(
-            notes = lazyPagingItems,
-            searchQuery = "",
-            onAddButtonClick = {},
-            onSearchQueryChanged = {}
-        ) {}
-    }
+    NotesListScreen(
+        notes = lazyPagingItems,
+        searchQuery = "",
+        onAddButtonClick = {},
+        onSearchQueryChanged = {}
+    )
 }

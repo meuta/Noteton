@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.noteton.R
+import com.example.noteton.presentation.camera.CameraPreviewScreen
 import com.example.noteton.presentation.screen_add_note.AddNoteScreenHost
 import com.example.noteton.presentation.screen_add_note.AddNoteViewModel
 import com.example.noteton.presentation.screen_notes_list.NotesListScreenHost
@@ -22,7 +23,8 @@ import com.example.noteton.ui.theme.NotetonTheme
 
 enum class NotetonScreen(@StringRes val title: Int) {
     NotesList(title = R.string.notes_list),
-    AddNote(title = R.string.add_note)
+    AddNote(title = R.string.add_note),
+    CameraPreview(title = R.string.camera_preview)
 }
 
 @Composable
@@ -67,8 +69,26 @@ fun NotetonRoot(
                     composable(route = NotetonScreen.AddNote.name) {
                         AddNoteScreenHost(
                             addNoteViewModel = addNoteViewModel,
+                            navigateToCameraPreview = {
+                                navController.navigate(NotetonScreen.CameraPreview.name)
+                            },
                             onSaveButtonClick = {
                                 navController.popBackStack()
+                                addNoteViewModel.resetSearchQuery()
+
+                            }
+                        )
+                    }
+
+
+                    composable(route = NotetonScreen.CameraPreview.name) {
+                        CameraPreviewScreen(
+                            onPhotoCaptured = { photoUri ->
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("captured_photo", photoUri)
+                                navController.popBackStack()
+                                addNoteViewModel.setPhotoUri(photoUri)
                             }
                         )
                     }
@@ -77,3 +97,5 @@ fun NotetonRoot(
         }
     }
 }
+
+
