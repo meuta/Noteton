@@ -9,11 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.content.ContextCompat
 
 @Composable
@@ -23,11 +19,7 @@ fun AddNoteScreenHost(
     onSaveButtonClick: () -> Unit,
 ) {
 
-    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(text = ""))
-    }
-
-    val photoUri by addNoteViewModel.photoUri.collectAsState(null)
+    val screenData by addNoteViewModel.noteScreenData.collectAsState(NoteScreenData())
 
     val context = LocalContext.current
 
@@ -53,7 +45,7 @@ fun AddNoteScreenHost(
 
     AddNoteScreen(
         onValueChange = { newValue ->
-            textFieldValue = newValue
+            addNoteViewModel.updateTextFieldValue(newValue)
         },
         onAddPhotoButtonClick = {
             val permissionsNeeded = permissionsToRequest.filter { permission ->
@@ -66,10 +58,14 @@ fun AddNoteScreenHost(
             }
         },
         onSaveButtonClick = {
-            addNoteViewModel.addNote(textFieldValue.text, photoUri)
+            addNoteViewModel.addNote(
+                id = screenData.noteId,
+                text = screenData.textFieldValue.text,
+                photoPath = screenData.photoUri
+            )
             onSaveButtonClick()
         },
-        textFieldValue = textFieldValue,
-        photoUri = photoUri,
+        textFieldValue = screenData.textFieldValue,
+        photoUri = screenData.photoUri,
     )
 }

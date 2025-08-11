@@ -49,6 +49,7 @@ fun NotesListScreen(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     onAddButtonClick: () -> Unit,
+    onNoteClick: (Note) -> Unit,
 ) {
 
     Scaffold(
@@ -120,6 +121,7 @@ fun NotesListScreen(
                             note = note,
                             onDeleteClick = { onDeleteNoteClick(note) },
                             deletable = isDeletableMode,
+                            onItemClick = { onNoteClick(note) },
                         )
                     }
                 }
@@ -166,5 +168,6 @@ fun NotesListScreenPreview() {
         searchQuery = "",
         onSearchQueryChanged = {},
         onDeleteNoteClick = {},
+        onNoteClick = {},
     )
 }

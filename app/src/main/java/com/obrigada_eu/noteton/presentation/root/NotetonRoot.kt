@@ -1,6 +1,5 @@
 package com.obrigada_eu.noteton.presentation.root
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -9,23 +8,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.obrigada_eu.noteton.R
 import com.obrigada_eu.noteton.presentation.screen_camera.CameraPreviewScreen
 import com.obrigada_eu.noteton.presentation.screen_add_note.AddNoteScreenHost
 import com.obrigada_eu.noteton.presentation.screen_add_note.AddNoteViewModel
+import com.obrigada_eu.noteton.presentation.screen_add_note.NoteScreenMode
 import com.obrigada_eu.noteton.presentation.screen_notes_list.NotesListScreenHost
 import com.obrigada_eu.noteton.presentation.screen_notes_list.NotesListViewModel
 import com.obrigada_eu.noteton.ui.theme.NotetonTheme
+import androidx.core.net.toUri
 
-enum class NotetonScreen(@StringRes val title: Int) {
-    NotesList(title = R.string.notes_list),
-    AddNote(title = R.string.add_note),
-    CameraPreview(title = R.string.camera_preview)
-}
 
 @Composable
 fun NotetonRoot(
@@ -36,7 +33,9 @@ fun NotetonRoot(
 
     NotetonTheme {
         Surface(
-            modifier = Modifier.fillMaxSize().imePadding(),
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding(),
             color = MaterialTheme.colorScheme.background,
         ) {
             Scaffold(
@@ -52,14 +51,29 @@ fun NotetonRoot(
                         NotesListScreenHost(
                             notesListViewModel = notesListViewModel,
                             onAddButtonClick = {
+                                addNoteViewModel.setMode(NoteScreenMode.CREATE)
                                 navController.navigate(NotetonScreen.AddNote.name)
-                                notesListViewModel.switchSearchMode(false)
-                                notesListViewModel.switchDeletableMode(false)
+                                notesListViewModel.resetState()
+                            },
+                            onNoteClick = { note ->
+                                navController.navigate(
+                                    NotetonScreen.AddNote.name,
+                                    navigatorExtras = null
+                                )
+                                notesListViewModel.resetState()
+                                addNoteViewModel.setMode(NoteScreenMode.EDIT)
+                                addNoteViewModel.updateTextFieldValue(TextFieldValue(
+                                    text = note.text,
+                                    selection = TextRange(note.text.length)
+                                ))
+                                addNoteViewModel.setPhotoUri(note.photoPath?.toUri())
+                                addNoteViewModel.setNoteId(note.id)
                             },
                         )
                     }
 
                     composable(route = NotetonScreen.AddNote.name) {
+
                         AddNoteScreenHost(
                             addNoteViewModel = addNoteViewModel,
                             navigateToCameraPreview = {
@@ -67,7 +81,7 @@ fun NotetonRoot(
                             },
                             onSaveButtonClick = {
                                 navController.popBackStack()
-                                addNoteViewModel.resetNoteAdding()
+                                addNoteViewModel.resetState()
                             },
                         )
                     }

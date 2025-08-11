@@ -67,4 +67,9 @@ class NotesListViewModel @Inject constructor(
             deleteNoteUseCase(note)
         }
     }
+
+    fun resetState() {
+        switchSearchMode(false)
+        switchDeletableMode(false)
+    }
 }

@@ -4,11 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.obrigada_eu.noteton.domain.model.Note
 
 @Composable
 fun NotesListScreenHost(
     notesListViewModel: NotesListViewModel,
-    onAddButtonClick: () -> Unit
+    onAddButtonClick: () -> Unit,
+    onNoteClick: (Note) -> Unit,
 ) {
 
     val notes = notesListViewModel.notes.collectAsLazyPagingItems()
@@ -32,5 +34,6 @@ fun NotesListScreenHost(
         searchQuery = searchQuery,
         onSearchQueryChanged = notesListViewModel::onSearchQueryChanged,
         onDeleteNoteClick = { notesListViewModel.deleteNote(it) },
+        onNoteClick = onNoteClick,
     )
 }

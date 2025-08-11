@@ -27,8 +27,9 @@ fun NoteItem(
     note: Note,
     deletable: Boolean,
     onDeleteClick: () -> Unit,
+    onItemClick: () -> Unit,
 ) {
-    Card(onClick = {}) {
+    Card(onClick = onItemClick) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,5 +85,6 @@ fun NoteItemPreview() {
         ),
         onDeleteClick = { },
         deletable = true,
+        onItemClick = {},
     )
 }
