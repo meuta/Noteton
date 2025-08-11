@@ -4,15 +4,14 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-//    alias(libs.plugins.androidx.room)
 }
 
 android {
-    namespace = "com.example.noteton"
+    namespace = "com.obrigada_eu.noteton"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.noteton"
+        applicationId = "com.obrigada_eu.noteton"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

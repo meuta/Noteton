@@ -4,9 +4,11 @@
     <string name="add_note">Add Note</string>
     <string name="camera_preview">Camera Preview</string>
     <string name="back_button">Back button</string>
-    <string name="save">SAVE</string>
+    <string name="save_uppercase">SAVE</string>
     <string name="write_a_note">Write a note</string>
     <string name="search">Search</string>
-    <string name="add_photo">ADD PHOTO</string>
+    <string name="search_uppercase">SEARCH</string>
+    <string name="add_photo_uppercase">ADD PHOTO</string>
     <string name="capture">Capture</string>
+    <string name="delete">DELETE</string>
 </resources>
