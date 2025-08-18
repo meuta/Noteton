@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -11,13 +12,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddNoteScreenHost(
     addNoteViewModel: AddNoteViewModel,
     navigateToCameraPreview: () -> Unit,
-    onSaveButtonClick: () -> Unit,
+    popBackStackAndClean: () -> Unit,
 ) {
+
+    BackHandler {
+        popBackStackAndClean()
+    }
 
     val screenData by addNoteViewModel.noteScreenData.collectAsState(NoteScreenData())
 
@@ -58,12 +65,12 @@ fun AddNoteScreenHost(
             }
         },
         onSaveButtonClick = {
-            addNoteViewModel.addNote(
-                id = screenData.noteId,
-                text = screenData.textFieldValue.text,
-                photoPath = screenData.photoUri
-            )
-            onSaveButtonClick()
+            addNoteViewModel.viewModelScope.launch {
+                if (addNoteViewModel.saveNote(
+                    id = screenData.noteId,
+                    text = screenData.textFieldValue.text,
+                )) popBackStackAndClean()
+            }
         },
         textFieldValue = screenData.textFieldValue,
         photoUri = screenData.photoUri,

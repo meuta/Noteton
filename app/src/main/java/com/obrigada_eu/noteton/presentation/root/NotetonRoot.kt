@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.obrigada_eu.noteton.presentation.screen_camera.CameraPreviewScreen
 import com.obrigada_eu.noteton.presentation.screen_add_note.AddNoteScreenHost
 import com.obrigada_eu.noteton.presentation.screen_add_note.AddNoteViewModel
 import com.obrigada_eu.noteton.presentation.screen_add_note.NoteScreenMode
@@ -22,6 +21,7 @@ import com.obrigada_eu.noteton.presentation.screen_notes_list.NotesListScreenHos
 import com.obrigada_eu.noteton.presentation.screen_notes_list.NotesListViewModel
 import com.obrigada_eu.noteton.ui.theme.NotetonTheme
 import androidx.core.net.toUri
+import com.obrigada_eu.noteton.presentation.screen_camera.CameraPreviewHost
 
 
 @Composable
@@ -56,18 +56,15 @@ fun NotetonRoot(
                                 notesListViewModel.resetState()
                             },
                             onNoteClick = { note ->
-                                navController.navigate(
-                                    NotetonScreen.AddNote.name,
-                                    navigatorExtras = null
-                                )
-                                notesListViewModel.resetState()
                                 addNoteViewModel.setMode(NoteScreenMode.EDIT)
+                                addNoteViewModel.setNoteId(note.id)
                                 addNoteViewModel.updateTextFieldValue(TextFieldValue(
                                     text = note.text,
                                     selection = TextRange(note.text.length)
                                 ))
-                                addNoteViewModel.setPhotoUri(note.photoPath?.toUri())
-                                addNoteViewModel.setNoteId(note.id)
+                                addNoteViewModel.updatePhotoUri(note.photoPath?.toUri())
+                                navController.navigate(NotetonScreen.AddNote.name)
+                                notesListViewModel.resetState()
                             },
                         )
                     }
@@ -79,21 +76,20 @@ fun NotetonRoot(
                             navigateToCameraPreview = {
                                 navController.navigate(NotetonScreen.CameraPreview.name)
                             },
-                            onSaveButtonClick = {
+                            popBackStackAndClean = {
                                 navController.popBackStack()
+                                addNoteViewModel.clearTempPhoto()
                                 addNoteViewModel.resetState()
                             },
                         )
                     }
 
                     composable(route = NotetonScreen.CameraPreview.name) {
-                        CameraPreviewScreen(
-                            onPhotoCaptured = { photoUri ->
-                                navController.previousBackStackEntry
-                                    ?.savedStateHandle
-                                    ?.set("captured_photo", photoUri)
+                        CameraPreviewHost(
+                            tempPhotoUri = addNoteViewModel.tempPhotoUri,
+                            onPhotoCaptured = {
+                                addNoteViewModel.onPhotoCaptured()
                                 navController.popBackStack()
-                                addNoteViewModel.setPhotoUri(photoUri)
                             },
                         )
                     }

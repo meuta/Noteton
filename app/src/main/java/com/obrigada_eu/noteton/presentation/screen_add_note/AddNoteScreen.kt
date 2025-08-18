@@ -73,16 +73,19 @@ fun AddNoteScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+                .padding(vertical = 16.dp, horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Button(
                 onClick = onAddPhotoButtonClick,
                 modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    modifier = Modifier.padding(5.dp),
-                    text = stringResource(R.string.add_photo_uppercase),
+                    modifier = Modifier.padding(vertical = 5.dp),
+                    maxLines = 1,
+                    text = stringResource(
+                        if (photoUri == null) R.string.add_photo_uppercase else R.string.change_photo_uppercase
+                    ),
                 )
             }
             Button(
@@ -90,7 +93,8 @@ fun AddNoteScreen(
                 modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    modifier = Modifier.padding(5.dp),
+                    modifier = Modifier.padding(vertical = 5.dp),
+                    maxLines = 1,
                     text = stringResource(R.string.save_uppercase),
                 )
             }

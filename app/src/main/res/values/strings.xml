@@ -9,6 +9,7 @@
     <string name="search">Search</string>
     <string name="search_uppercase">SEARCH</string>
     <string name="add_photo_uppercase">ADD PHOTO</string>
+    <string name="change_photo_uppercase">CHANGE PHOTO</string>
     <string name="capture">Capture</string>
     <string name="delete">DELETE</string>
 </resources>

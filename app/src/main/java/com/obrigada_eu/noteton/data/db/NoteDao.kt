@@ -11,6 +11,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE text LIKE :query ORDER BY createdAt DESC")
     fun getNotesPagingSource(query: String): PagingSource<Int, NoteEntity>
 
+    @Query("SELECT * FROM notes WHERE id = :id LIMIT 1")
+    suspend fun getNote(id: Long): NoteEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: NoteEntity)
 

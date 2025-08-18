@@ -1,6 +1,7 @@
 package com.obrigada_eu.noteton.di
 
 import android.content.Context
+import com.obrigada_eu.noteton.core.CacheManager
 import com.obrigada_eu.noteton.data.db.NotesDatabase
 import com.obrigada_eu.noteton.data.db.NoteDao
 import com.obrigada_eu.noteton.data.repository.NotesRepositoryImpl
@@ -30,7 +31,11 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideRepository(@ApplicationContext context: Context, noteDao: NoteDao): NotesRepository {
-        return NotesRepositoryImpl(context, noteDao)
+    fun provideRepository(noteDao: NoteDao): NotesRepository {
+        return NotesRepositoryImpl(noteDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideCacheManager(@ApplicationContext context: Context): CacheManager = CacheManager(context)
 }
