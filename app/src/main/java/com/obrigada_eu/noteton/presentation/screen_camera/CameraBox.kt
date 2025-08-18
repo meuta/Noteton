@@ -1,7 +1,7 @@
 package com.obrigada_eu.noteton.presentation.screen_camera
 
-import android.annotation.SuppressLint
 import android.net.Uri
+import android.view.Surface
 import android.view.View
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -33,6 +33,7 @@ fun CameraBox(
     previewView: View,
     tempPhotoUri: Uri,
     imageCapture: ImageCapture,
+    targetRotation: Int = Surface.ROTATION_0,
     onPhotoCaptured: () -> Unit,
 ) {
 
@@ -69,6 +70,8 @@ fun CameraBox(
 
                 val outputOptions = ImageCapture.OutputFileOptions.Builder(tempPhotoUri.toFile()).build()
 
+                imageCapture.targetRotation = targetRotation
+
                 imageCapture.takePicture(
                     outputOptions,
                     ContextCompat.getMainExecutor(context),
@@ -87,7 +90,6 @@ fun CameraBox(
     }
 }
 
-@SuppressLint("SetTextI18n")
 @Preview
 @Composable
 fun CameraBoxPreview() {
