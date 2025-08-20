@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.exifinterface)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
@@ -80,6 +81,8 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation(libs.kotlinx.coroutines.guava)
+
+    implementation(libs.compose.icons)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

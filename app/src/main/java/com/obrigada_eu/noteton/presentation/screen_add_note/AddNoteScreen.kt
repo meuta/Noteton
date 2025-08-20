@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.core.net.toUri
 import com.obrigada_eu.noteton.R
 import com.obrigada_eu.noteton.ui.theme.NotetonTheme
 
@@ -36,6 +36,9 @@ fun AddNoteScreen(
     onValueChange: (TextFieldValue) -> Unit,
     onAddPhotoButtonClick: () -> Unit,
     onSaveButtonClick: () -> Unit,
+    rotation: Int,
+    onRotateLeft: () -> Unit,
+    onRotateRight: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -48,13 +51,16 @@ fun AddNoteScreen(
     ) {
 
         photoUri?.let { uri ->
-            AsyncImage(
-                model = uri,
+            EditableImage(
+                uri = uri,
                 contentDescription = "Photo of the Note",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .clip(RoundedCornerShape(8.dp)),
+                rotation = rotation,
+                onRotateLeft = onRotateLeft,
+                onRotateRight = onRotateRight,
             )
         }
 
@@ -113,7 +119,10 @@ fun AddNoteScreenPreview() {
             onValueChange = {},
             onAddPhotoButtonClick = {},
             onSaveButtonClick = {},
-            photoUri = null,
+            photoUri = "".toUri(),
+            rotation = 0,
+            onRotateLeft = {},
+            onRotateRight = {},
         )
     }
 }

@@ -12,8 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun AddNoteScreenHost(
@@ -27,6 +25,8 @@ fun AddNoteScreenHost(
     }
 
     val screenData by addNoteViewModel.noteScreenData.collectAsState(NoteScreenData())
+
+    val rotation by addNoteViewModel.rotation.collectAsState(0)
 
     val context = LocalContext.current
 
@@ -56,7 +56,10 @@ fun AddNoteScreenHost(
         },
         onAddPhotoButtonClick = {
             val permissionsNeeded = permissionsToRequest.filter { permission ->
-                ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
             }
             if (permissionsNeeded.isEmpty()) {
                 navigateToCameraPreview()
@@ -65,14 +68,16 @@ fun AddNoteScreenHost(
             }
         },
         onSaveButtonClick = {
-            addNoteViewModel.viewModelScope.launch {
-                if (addNoteViewModel.saveNote(
-                    id = screenData.noteId,
-                    text = screenData.textFieldValue.text,
-                )) popBackStackAndClean()
-            }
+            addNoteViewModel.onSaveNote(
+                id = screenData.noteId,
+                text = screenData.textFieldValue.text,
+                onSuccess = popBackStackAndClean
+            )
         },
         textFieldValue = screenData.textFieldValue,
         photoUri = screenData.photoUri,
+        rotation = rotation,
+        onRotateLeft = addNoteViewModel::onRotateLeft,
+        onRotateRight = addNoteViewModel::onRotateRight,
     )
 }

@@ -8,5 +8,5 @@ data class NoteEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val text: String,
     val photoPath: String?,
-    val createdAt: Long
+    val updatedAt: Long
 )

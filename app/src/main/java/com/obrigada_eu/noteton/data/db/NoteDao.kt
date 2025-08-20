@@ -8,7 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface NoteDao {
-    @Query("SELECT * FROM notes WHERE text LIKE :query ORDER BY createdAt DESC")
+    @Query("SELECT * FROM notes WHERE text LIKE :query ORDER BY updatedAt DESC")
     fun getNotesPagingSource(query: String): PagingSource<Int, NoteEntity>
 
     @Query("SELECT * FROM notes WHERE id = :id LIMIT 1")

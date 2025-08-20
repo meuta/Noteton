@@ -8,12 +8,12 @@ object NoteMapper {
         id = note.id,
         text = note.text,
         photoPath = note.photoPath,
-        createdAt = note.createdAt
+        updatedAt = note.updatedAt
     )
     fun mapNoteDbToDomain(note: NoteEntity): Note = Note(
         id = note.id,
         text = note.text,
         photoPath = note.photoPath,
-        createdAt = note.createdAt
+        updatedAt = note.updatedAt
     )
 }

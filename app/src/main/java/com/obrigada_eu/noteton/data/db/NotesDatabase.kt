@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [NoteEntity::class], version = 1, exportSchema = true)
+@Database(entities = [NoteEntity::class], version = 2, exportSchema = true)
 abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao
@@ -17,10 +17,10 @@ abstract class NotesDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): NotesDatabase {
             return Room.databaseBuilder(
-                context,
-                NotesDatabase::class.java,
-                DB_NAME
-            ).build()
+                        context,
+                        NotesDatabase::class.java,
+                        DB_NAME
+                    ).fallbackToDestructiveMigration(false).build()
         }
     }
 }

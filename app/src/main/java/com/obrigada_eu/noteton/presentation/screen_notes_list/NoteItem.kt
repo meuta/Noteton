@@ -81,7 +81,7 @@ fun NoteItemPreview() {
         note = Note(
             text = "note text text text text",
             photoPath = "",
-            createdAt = 0,
+            updatedAt = 0,
         ),
         onDeleteClick = { },
         deletable = true,

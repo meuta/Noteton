@@ -148,8 +148,8 @@ fun NotesListScreen(
 @Composable
 fun NotesListScreenPreview() {
     val sampleNotes = listOf(
-        Note(id = 1, text = "First note", photoPath = null, createdAt = System.currentTimeMillis()),
-        Note(id = 2, text = "Second note", photoPath = null, createdAt = System.currentTimeMillis())
+        Note(id = 1, text = "First note", photoPath = null, updatedAt = System.currentTimeMillis()),
+        Note(id = 2, text = "Second note", photoPath = null, updatedAt = System.currentTimeMillis())
     )
 
     val fakeFlow = remember {
