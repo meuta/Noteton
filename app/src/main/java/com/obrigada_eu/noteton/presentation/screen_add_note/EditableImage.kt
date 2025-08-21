@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
-import coil.compose.AsyncImage
 
 @Composable
 fun EditableImage(
@@ -27,8 +26,8 @@ fun EditableImage(
 ) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        AsyncImage(
-            model = uri,
+    PinchToZoomImage(
+            imageUrl = uri,
             contentDescription = contentDescription,
             modifier = modifier
                 .graphicsLayer {
