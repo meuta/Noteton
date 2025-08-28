@@ -84,6 +84,16 @@ dependencies {
 
     implementation(libs.compose.icons)
 
+    // Retrofit
+    implementation(libs.retrofit)
+
+    // XML Converter
+    implementation(libs.converter.jackson)
+
+    // OkHttp Logging
+    implementation(libs.logging.interceptor)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
