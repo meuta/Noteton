@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -112,14 +113,15 @@ fun AddNoteScreen(
 @Preview(showBackground = true)
 @Composable
 fun AddNoteScreenPreview() {
+    val context = LocalContext.current
 
     NotetonTheme {
         AddNoteScreen(
-            textFieldValue = TextFieldValue("Here is a note preview\nit is visible and it is will be saved in the database"),
+            textFieldValue = TextFieldValue("Here is a note preview\nit is visible and it will be saved in the database"),
             onValueChange = {},
             onAddPhotoButtonClick = {},
             onSaveButtonClick = {},
-            photoUri = "".toUri(),
+            photoUri = "android.resource://${context.packageName}/${R.raw.tree1}".toUri(),
             rotation = 0,
             onRotateLeft = {},
             onRotateRight = {},

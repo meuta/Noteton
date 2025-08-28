@@ -16,8 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 
 
 @Composable
