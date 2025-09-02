@@ -87,8 +87,11 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
 
-    // XML Converter
-    implementation(libs.converter.jackson)
+    // Gson
+    implementation(libs.converter.gson)
+
+    // Jsoup
+    implementation(libs.jsoup)
 
     // OkHttp Logging
     implementation(libs.logging.interceptor)

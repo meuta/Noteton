@@ -8,6 +8,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +29,10 @@ fun AddNoteScreenHost(
 
     val rotation by addNoteViewModel.rotation.collectAsState(0)
 
+
+    val wordDefinition by addNoteViewModel.wordDefinitionHtml.collectAsState(null)
+
+
     val context = LocalContext.current
 
     val permissionsToRequest = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
@@ -46,7 +51,7 @@ fun AddNoteScreenHost(
         if (allGranted) {
             navigateToCameraPreview()
         } else {
-            Toast.makeText(context, "Required permissions denied", Toast.LENGTH_SHORT).show()
+            addNoteViewModel.showMessage("Required permissions denied")
         }
     }
 
@@ -54,6 +59,7 @@ fun AddNoteScreenHost(
         onValueChange = { newValue ->
             addNoteViewModel.updateTextFieldValue(newValue)
         },
+        onExploreButtonClick = addNoteViewModel::fetchDefinitionPage,
         onAddPhotoButtonClick = {
             val permissionsNeeded = permissionsToRequest.filter { permission ->
                 ContextCompat.checkSelfPermission(
@@ -79,5 +85,16 @@ fun AddNoteScreenHost(
         rotation = rotation,
         onRotateLeft = addNoteViewModel::onRotateLeft,
         onRotateRight = addNoteViewModel::onRotateRight,
+        definitionHtml = wordDefinition,
+        definitionContent = {
+            wordDefinition?.let{ DefinitionWebView(it) }
+        }
     )
+
+
+    LaunchedEffect(Unit) {
+        addNoteViewModel.uiEvent.collect { text ->
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        }
+    }
 }

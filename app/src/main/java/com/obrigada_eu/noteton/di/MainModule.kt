@@ -4,7 +4,7 @@ import android.content.Context
 import com.obrigada_eu.noteton.core.CacheManager
 import com.obrigada_eu.noteton.data.db.NotesDatabase
 import com.obrigada_eu.noteton.data.db.NoteDao
-import com.obrigada_eu.noteton.data.repository.NotesRepositoryImpl
+import com.obrigada_eu.noteton.data.local.repository.NotesRepositoryImpl
 import com.obrigada_eu.noteton.domain.repository.NotesRepository
 import dagger.Module
 import dagger.Provides

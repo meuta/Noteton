@@ -1,4 +1,4 @@
-package com.obrigada_eu.noteton.data.repository
+package com.obrigada_eu.noteton.data.local.repository
 
 import androidx.core.net.toFile
 import androidx.paging.Pager

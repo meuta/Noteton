@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.net.toFile
 import androidx.core.net.toUri
@@ -13,12 +14,15 @@ import com.obrigada_eu.noteton.core.CacheManager
 import com.obrigada_eu.noteton.core.util.ImageExifProcessor
 import com.obrigada_eu.noteton.domain.model.Note
 import com.obrigada_eu.noteton.domain.usecase.AddNoteUseCase
+import com.obrigada_eu.noteton.domain.usecase.GetWordDefinitionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +33,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddNoteViewModel @Inject constructor(
     private val addNoteUseCase: AddNoteUseCase,
+    private val getWordDefinitionUseCase: GetWordDefinitionUseCase,
     private val cacheManager: CacheManager,
 ) : ViewModel() {
 
@@ -42,6 +47,36 @@ class AddNoteViewModel @Inject constructor(
 
     val tempPhotoUri by lazy { cacheManager.tempPhotoUri }
 
+
+
+    private val _wordDefinitionHtml = MutableStateFlow<String?>(null)
+    val wordDefinitionHtml: StateFlow<String?> = _wordDefinitionHtml
+
+
+    private val _uiEvent = Channel<String>(Channel.Factory.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
+
+    fun showMessage(text: String) {
+        viewModelScope.launch { _uiEvent.send(text) }
+    }
+
+    fun fetchDefinitionPage() {
+        viewModelScope.launch {
+            try {
+                val word = _noteScreenData.value.textFieldValue.text
+                val def = getWordDefinitionUseCase(word)
+                if (def == null) {
+                    showMessage("Definition not found")
+                }
+//                Log.d(TAG, "fetchDefinition: xmlContent: $def")
+                _wordDefinitionHtml.value = def
+
+            } catch (e: Exception) {
+                Log.w(TAG, "fetchDefinition: error: ${e.message}")
+                showMessage("Network error")
+            }
+        }
+    }
 
     fun onRotateLeft() {
         _rotation.value = (_rotation.value - 90).mod(360)
@@ -116,6 +151,7 @@ class AddNoteViewModel @Inject constructor(
     fun resetState() {
         _noteScreenData.update { NoteScreenData() }
         resetRotation()
+        _wordDefinitionHtml.value = null
     }
 
     fun clearTempPhoto() {

@@ -2,6 +2,7 @@
 agp = "8.11.1"
 coilCompose = "3.3.0"
 converterJackson = "3.0.0"
+jsoup = "1.21.2"
 kotlin = "2.2.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -29,7 +30,8 @@ exifinterface = "1.3.6"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "converterJackson" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterJackson" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
